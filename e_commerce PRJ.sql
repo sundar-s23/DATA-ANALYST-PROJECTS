@@ -1,0 +1,36 @@
+create database e_commerce;
+use e_commerce;
+select * from e_commerce;
+
+-- Total Sales
+SELECT SUM(price*quantity) AS Total_Sales
+FROM e_commerce;
+
+-- Total order
+ SELECT COUNT(OrderID) AS Total_Orders
+FROM e_commerce;
+
+-- Sales by Category 
+SELECT Category,SUM(price*quantity) AS Sales
+FROM e_commerce
+GROUP BY Category
+ORDER BY Sales DESC;
+
+-- Top Selling Products 
+SELECT Product, SUM(quantity) AS Total_Sold FROM e_commerce
+GROUP BY Product
+ORDER BY Total_Sold DESC
+LIMIT 5;
+
+
+
+-- Sales by City
+SELECT City,
+SUM(price*quantity) AS City_Sales
+FROM e_commerce
+GROUP BY City
+ORDER BY City_Sales DESC;
+
+select*from e_commerce limit 10;
+select sum(Quantity) as total_quantity from e_commerce;
+select * from e_commerce;
