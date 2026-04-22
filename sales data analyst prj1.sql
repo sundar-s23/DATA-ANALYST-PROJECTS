@@ -1,0 +1,121 @@
+CREATE DATABASE sales_data2;
+USE sales_data2;
+
+
+CREATE TABLE customers(
+customer_id INT PRIMARY KEY,
+customer_name VARCHAR(50),
+city VARCHAR(50),
+email VARCHAR(50)
+);
+
+INSERT INTO customers(customer_id,customer_name,city,email) VALUES
+(101, 'Ravi Kumar', 'Chennai', 'ravi@gmail.com'),
+(102, 'Arjun', 'Madurai', 'arjun@gmail.com'),
+(103, 'Priya', 'Coimbatore', 'priya@gmail.com'),
+(104, 'Karthik', 'Salem', 'karthik@gmail.com'),
+(105, 'Divya', 'Trichy', 'divya@gmail.com'),
+(106, 'Suresh', 'Chennai', 'suresh@gmail.com'),
+(107, 'Anitha', 'Madurai', 'anitha@gmail.com'),
+(108, 'Vijay', 'Coimbatore', 'vijay@gmail.com'),
+(109, 'Meena', 'Salem', 'meena@gmail.com'),
+(110, 'Rajesh', 'Trichy', 'rajesh@gmail.com');
+
+SELECT * FROM customers;
+
+
+CREATE TABLE products (
+product_id INT PRIMARY KEY,
+product_name VARCHAR(50),
+category VARCHAR(50),
+price INT
+);
+
+
+INSERT INTO products (product_id, product_name, category, price) VALUES
+(1, 'Laptop', 'Electronics', 50000),
+(2, 'Mobile', 'Electronics', 20000),
+(3, 'Headphones', 'Electronics', 2000),
+(4, 'Chair', 'Furniture', 3000),
+(5, 'Table', 'Furniture', 7000),
+(6, 'Monitor', 'Electronics', 15000),
+(7, 'Keyboard', 'Electronics', 1000),
+(8, 'Mouse', 'Electronics', 500),
+(9, 'USB', 'Electronics', 1000),
+(10, 'Temper Glass', 'Electronics', 500);
+
+SELECT * FROM products;
+
+
+CREATE TABLE orders(
+order_id INT PRIMARY KEY,
+order_date DATE,
+customer_id INT,
+FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
+);
+
+
+INSERT INTO orders (order_id, order_date, customer_id) VALUES
+(201, '2024-01-10', 101),
+(202, '2024-01-11', 102),
+(203, '2024-01-12', 103),
+(204, '2024-01-13', 104),
+(205, '2024-01-14', 105),
+(206, '2024-01-15', 106),
+(207, '2024-01-16', 107),
+(208, '2024-01-17', 108),
+(209, '2024-01-18', 109),
+(210, '2024-01-19', 110);
+
+SELECT * FROM orders;
+
+
+CREATE TABLE order_details (
+order_detail_id INT PRIMARY KEY,
+order_id INT,
+product_id INT,
+quantity INT,
+FOREIGN KEY (order_id) REFERENCES orders(order_id),
+FOREIGN KEY (product_id) REFERENCES products(product_id)
+);
+
+
+INSERT INTO order_details (order_detail_id, order_id, product_id, quantity) VALUES
+(1, 201, 1, 1),
+(2, 201, 3, 2),
+(3, 202, 2, 1),
+(4, 203, 4, 3),
+(5, 204, 6, 1),
+(6, 205, 5, 1),
+(7, 206, 1, 1),
+(8, 207, 7, 2),
+(9, 208, 8, 3),
+(10, 209, 2, 1);
+
+SELECT * FROM order_details;
+
+
+CREATE VIEW merge_table AS
+SELECT
+c.customer_id,
+c.customer_name,
+c.city,
+c.email,
+p.product_id,
+p.product_name,
+p.category,
+p.price,
+o.order_id,
+o.order_date,
+od.order_detail_id,
+od.quantity
+FROM customers c
+JOIN orders o
+ON c.customer_id = o.customer_id
+LEFT JOIN order_details od
+ON o.order_id = od.order_id
+LEFT JOIN products p
+ON od.product_id = p.product_id;
+
+
+SELECT * FROM merge_table;
